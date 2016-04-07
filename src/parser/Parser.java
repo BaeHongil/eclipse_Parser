@@ -7,10 +7,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class Test {
+public class Parser {
 
-	public static void main(String[] args) {
-		String url = "http://m.businfo.go.kr/bp/m/route.do?act=routeNoMain&roNo=93";
+	public Parser() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public void getRouteByNo(String no) {
+		String url = "http://m.businfo.go.kr/bp/m/route.do?act=routeNoMain&roNo=" + no;
 		Document doc;
 		try {
 			doc = Jsoup.connect(url).get();
@@ -33,8 +37,5 @@ public class Test {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        
-
 	}
-
 }

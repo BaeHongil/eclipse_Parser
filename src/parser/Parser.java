@@ -1,6 +1,7 @@
 package parser;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,29 +14,28 @@ public class Parser {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void getRouteByNo(String no) {
+	public LinkedHashMap getRouteLinkListByNo(String no) {
 		String url = "http://m.businfo.go.kr/bp/m/route.do?act=routeNoMain&roNo=" + no;
 		Document doc;
 		try {
 			doc = Jsoup.connect(url).get();
 	        Elements titles = doc.select("a.pl39");
-	        if( titles.isEmpty() ) {
+	        LinkedHashMap<String, String> linkList = new LinkedHashMap<String, String>();
+	        if( !titles.isEmpty() ) {
+	        	linkList.put(no, url);
+	        }	        	
+	        else {
 	        	titles = doc.select("ul.bl.mr15 .nx a");
-	        	System.out.println(titles.isEmpty());
+	        	for(Element e: titles) {
+		            System.out.println( e.text() );
+		        	linkList.put(e.text(), e.attr("href"));
+		        }
 	        }
-	        
-	        String output = "";
-	        
-	        for(Element e: titles) {
-	            output += e.text();
-	            output += "\n";
-	        }
-	        
-	        //System.out.println( output.replace("\n\n", "\b") );
-	        System.out.println( output );
+
+        	return linkList;
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		return null;
 	}
 }

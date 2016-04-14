@@ -15,10 +15,14 @@ public class Test {
 	public static void main(String[] args) {
 		Parser parser = new Parser();
 		
-		LinkedHashMap<String, String> linkList = parser.getRouteLinkListByNo("93");
+		LinkedHashMap<String, String> linkList = parser.getRouteLinkListByNo("937");
 		
 		for(Iterator<String> linkitr = linkList.keySet().iterator(); linkitr.hasNext(); ) {
-			System.out.println(linkitr.next());
+			String key = linkitr.next();
+			System.out.println(key);
+			System.out.println(linkList.get(key));
+			
+			parser.getRouteByUrl(linkList.get(key));
 		}
 	}
 

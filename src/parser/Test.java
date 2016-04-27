@@ -15,7 +15,7 @@ public class Test {
 	public static void main(String[] args) {
 		Parser parser = new Parser();
 		
-		LinkedHashMap<String, String> linkList = parser.getRouteLinkListByNo("937");
+		LinkedHashMap<String, String> linkList = parser.getRouteLinkListByNo("93");
 		
 		for(Iterator<String> linkitr = linkList.keySet().iterator(); linkitr.hasNext(); ) {
 			String key = linkitr.next();

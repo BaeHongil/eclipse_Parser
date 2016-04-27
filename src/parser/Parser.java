@@ -17,7 +17,7 @@ public class Parser {
 	}
 	
 	// 버스노선 검색
-	public LinkedHashMap getRouteLinkListByNo(String no) {
+	public LinkedHashMap<String,String> getRouteListByNo(String no) {
 		String url = domain + "realTime.do?act=posInfoMain&roNo=" + no;
 		Document doc;
 		try {
@@ -26,12 +26,11 @@ public class Parser {
 	        LinkedHashMap<String, String> linkList = new LinkedHashMap<String, String>();
 	        if( !titles.isEmpty() ) {
 	        	for(Element e: titles) {
-		        //    System.out.println( e.text() );
-		        	linkList.put(e.text(), domain + e.attr("href"));
+		        	linkList.put(e.text(), e.absUrl("href"));
 		        }
 	        }	        	
 	        else 
-	        	linkList.put(no, url);	        	
+	        	linkList.put(no, url);
 	        
 
         	return linkList;
@@ -42,22 +41,21 @@ public class Parser {
 	}
 	
 	// 버스위치정보 검색
-	public LinkedHashMap getRouteByUrl(String url) {
+	public LinkedHashMap<String,String> getRouteByUrl(String url) {
 		Document doc;
 		try {
 			doc = Jsoup.connect(url).get();
 	        Elements titles = doc.select(".bl");
-	        //Elements titles = doc.select(".pl39");
 	        LinkedHashMap<String, String> linkList = new LinkedHashMap<String, String>();
 	        if( !titles.isEmpty() ) {
 	        	for(Element e : titles) {
 	        		for(Element e2 : e.children()) {
 	        			if( e2.classNames().contains("bloc_b") ) { // nsbus는 저상버스
 	        				System.out.print("위치 : ");
-		        			System.out.println(e2.text());	        				
+		        			System.out.println(e2.text());
 	        			}
 	        			else
-	        				System.out.println(e2.child(1).text());
+	        				System.out.println(e2.child(1).text().substring( e2.child(1).text().indexOf(". ")+2 ));
 	        		}
 	        		//System.out.println(e.text());
 	        	}
@@ -71,22 +69,21 @@ public class Parser {
 	}
 	
 	// 버스정류장 검색
-	public LinkedHashMap getBusStopByStr(String str) {
+	public LinkedHashMap<String,String> getBusStopListByWord(String word) {
 		String url;
 		Document doc;
 		try {
-			url = domain + "realTime.do?act=arrInfoMain&bsNm=" +  URLEncoder.encode(str, "UTF-8");
+			url = domain + "realTime.do?act=arrInfoMain&bsNm=" + word;
 			doc = Jsoup.connect(url).get();
         	Elements titles = doc.select(".pl39");
 	        LinkedHashMap<String, String> linkList = new LinkedHashMap<String, String>();
 	        if( !titles.isEmpty() ) {
 	        	for(Element e: titles) {
-		        //    System.out.println( e.text() );
-		        	linkList.put(e.text(), domain + e.attr("href"));
+		        	linkList.put(e.text(), e.absUrl("href"));
 		        }
 	        }	        	
 	        else 
-	        	linkList.put(str, url);	        	
+	        	linkList.put(word, url);
 	        
 
         	return linkList;
